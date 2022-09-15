@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, FC } from "react";
+import React, { ChangeEventHandler, FC, useState } from "react";
 import "./App.css";
 
 interface IPost {
@@ -45,10 +45,7 @@ const List: FC<{ posts: IPost[] }> = (props: { posts: IPost[] }) => {
 type IHandleSeach = (val: string) => void;
 
 const Search: FC<{ onSearch: IHandleSeach }> = (props) => {
-  // const [searchTerm, setSearchTerm] = React.useState("");
-
   const handleChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
-    // setSearchTerm(evt.target.value);
     props.onSearch(evt.target.value);
   };
 
@@ -62,14 +59,14 @@ const Search: FC<{ onSearch: IHandleSeach }> = (props) => {
 
 function App() {
 
-  const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const handleSearch: IHandleSeach = (term) => setSearchTerm(term);
-  
+  const searchPosts = myPosts.filter(el=>el.title.includes(searchTerm))
   return (
     <div className="App">
       <Search onSearch={handleSearch} />
       <p>{searchTerm}</p>
-      <List posts={myPosts} />
+      <List posts={searchPosts} />
     </div>
   );
 }
